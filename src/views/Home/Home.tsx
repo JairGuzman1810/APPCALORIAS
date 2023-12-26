@@ -1,11 +1,13 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import Header from '../../components/Header';
+import Calorias from '../../components/Calories';
 
 const Home = () => {
   return (
     <View style={styles.container}>
       <Header />
+      <Calorias />
     </View>
   );
 };
