@@ -10,6 +10,9 @@ const StaticInfo = {
 };
 
 const Header = () => {
+  //Gracias a este metodo, puedo volver atras y hacer uso en logica,
+  //en eseta caso verifique si se puede ir atras y si se puede, muestra
+  //el boton.
   const {canGoBack, goBack} = useNavigation();
   return (
     <View style={styles.container}>
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 24,
   },
-  arrowContainer: {},
+  arrowContainer: {marginLeft: -12},
 });
 
 export default Header;
