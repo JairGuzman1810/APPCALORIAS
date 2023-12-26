@@ -1,4 +1,6 @@
-import {Image} from '@rneui/base';
+import {useNavigation} from '@react-navigation/native';
+import {Icon, Image} from '@rneui/base';
+import {Button} from '@rneui/themed';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
@@ -8,8 +10,18 @@ const StaticInfo = {
 };
 
 const Header = () => {
+  const {canGoBack, goBack} = useNavigation();
   return (
     <View style={styles.container}>
+      {canGoBack() ? (
+        <View style={styles.arrowContainer}>
+          <Button
+            icon={<Icon name="arrow-back" size={24} />}
+            type="clear"
+            onPress={goBack}
+          />
+        </View>
+      ) : undefined}
       <View style={styles.leftcontainer}>
         <Text style={styles.name}>{`Hello ${StaticInfo.name}`}</Text>
         <Text style={styles.subtitle}>Welcome back to your goal</Text>
@@ -49,6 +61,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 24,
   },
+  arrowContainer: {},
 });
 
 export default Header;
