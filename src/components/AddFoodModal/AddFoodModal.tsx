@@ -1,5 +1,5 @@
 import {Modal, StyleSheet, Text, View} from 'react-native';
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Button, Icon} from '@rneui/themed';
 import {Input} from '@rneui/base';
 //Propiedades para manejar el cierre y visibilidad
@@ -9,6 +9,21 @@ type AddFoodModalProps = {
 };
 
 const AddFoodModal: FC<AddFoodModalProps> = ({onClose, visible}) => {
+  const [calories, setCalories] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [portion, setPortion] = useState<string>('');
+
+  //Si la visibilidad del modal cambia, se reinician los
+  useEffect(() => {
+    setCalories('');
+    setName('');
+    setPortion('');
+  }, [visible]);
+
+  const handleAddPress = () => {
+    onClose();
+  };
+
   return (
     <Modal
       visible={visible}
@@ -26,15 +41,21 @@ const AddFoodModal: FC<AddFoodModalProps> = ({onClose, visible}) => {
           </View>
           <View style={styles.formItem}>
             <View style={styles.inputContainer}>
-              <Input />
+              <Input
+                value={calories}
+                onChangeText={(text: string) => setCalories(text)}
+              />
             </View>
             <View style={styles.legendContainer}>
-              <Text style={styles.legend}>KCAL</Text>
+              <Text style={styles.legend}>CAL</Text>
             </View>
           </View>
           <View style={styles.formItem}>
             <View style={styles.inputContainer}>
-              <Input />
+              <Input
+                value={name}
+                onChangeText={(text: string) => setName(text)}
+              />
             </View>
             <View style={styles.legendContainer}>
               <Text style={styles.legend}>Nombre</Text>
@@ -42,7 +63,11 @@ const AddFoodModal: FC<AddFoodModalProps> = ({onClose, visible}) => {
           </View>
           <View style={styles.formItem}>
             <View style={styles.inputContainer}>
-              <Input />
+              {/* Asi se asigna el valor del input a una variable, sin necesidad de ids como se ocuparia en otros casos */}
+              <Input
+                value={portion}
+                onChangeText={(text: string) => setPortion(text)}
+              />
             </View>
             <View style={styles.legendContainer}>
               <Text style={styles.legend}>Porción</Text>
@@ -54,6 +79,13 @@ const AddFoodModal: FC<AddFoodModalProps> = ({onClose, visible}) => {
               icon={<Icon name="add" color={'#FFF'} />}
               radius={'lg'}
               color={'#4ECB71'}
+              //Se pueden poner validaciones en los atributos
+              disabled={
+                calories.trim() === '' ||
+                name.trim() === '' ||
+                portion.trim() === ''
+              }
+              onPress={handleAddPress}
             />
           </View>
         </View>
