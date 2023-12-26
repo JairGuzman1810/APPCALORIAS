@@ -1,15 +1,21 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from '@rneui/themed';
+import Header from '../../components/Header';
 
 const Home = () => {
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={styles.container}>
+      <Header />
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    padding: 12,
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+  },
+});
 
 export default Home;
