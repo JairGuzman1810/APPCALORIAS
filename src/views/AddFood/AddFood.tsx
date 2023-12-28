@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, Alert} from 'react-native';
 import Header from '../../components/Header';
 import {Button, Icon, Input} from '@rneui/themed';
 import AddFoodModal from '../../components/AddFoodModal';
 import useFoodStorage from '../../hooks/useFoodStorage';
 import {Meal} from '../../types';
+import {ScrollView} from 'react-native-gesture-handler';
+import MealItem from '../../components/MealItem';
 
 const AddFood = () => {
   const [visible, setIsVisible] = useState<boolean>(false);
@@ -18,6 +20,10 @@ const AddFood = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    loadFoods().catch(null);
+  }, []);
   const handleModalClose = async (shouldUpdate?: boolean) => {
     if (shouldUpdate) {
       Alert.alert('The food was saved successfully.');
@@ -52,6 +58,11 @@ const AddFood = () => {
           titleStyle={styles.searchBtnTitle}
         />
       </View>
+      <ScrollView style={styles.content}>
+        {foods?.map(meal => (
+          <MealItem key={`my-meal-item-${meal.name}`} {...meal} />
+        ))}
+      </ScrollView>
       <AddFoodModal visible={visible} onClose={handleModalClose} />
     </View>
   );
@@ -63,6 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
   },
+  content: {},
   addFoodContainer: {
     flexDirection: 'row',
     alignItems: 'center',
