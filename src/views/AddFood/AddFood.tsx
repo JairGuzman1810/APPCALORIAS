@@ -20,6 +20,7 @@ const AddFood = () => {
       setFoods(foodsResponse);
     } catch (error) {
       console.log(error);
+      setFoods([]);
     }
   };
 
@@ -34,7 +35,7 @@ const AddFood = () => {
     }
     setIsVisible(false);
   };
-  //Metodo llamado
+  //Metodo llamado al presionar el boton.
   const handleSearchPress = async () => {
     try {
       //Se obtiene las comidas.
