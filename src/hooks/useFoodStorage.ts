@@ -51,14 +51,12 @@ const useFoodStorage = () => {
 
   const handleSaveTodayFood = async ({calories, name, portion}: Meal) => {
     try {
-      const currentDate = new Date();
       // Subtract a day from the current date
-      currentDate.setDate(currentDate.getDate() - 1);
       const result = await saveInfoToStorage(MY_TODAY_FOOD_KEY, {
         calories,
         name,
         portion,
-        date: currentDate.toISOString(),
+        date: new Date().toISOString(),
       });
 
       return Promise.resolve(result);
