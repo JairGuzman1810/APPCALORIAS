@@ -1,13 +1,29 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Alert} from 'react-native';
 import Header from '../../components/Header';
 import {Button, Icon, Input} from '@rneui/themed';
 import AddFoodModal from '../../components/AddFoodModal';
+import useFoodStorage from '../../hooks/useFoodStorage';
+import {Meal} from '../../types';
 
 const AddFood = () => {
-  const [visible, setIsVisble] = useState<boolean>(false);
-  const handleModalClose = () => {
-    setIsVisble(false);
+  const [visible, setIsVisible] = useState<boolean>(false);
+  const {onGetFood} = useFoodStorage();
+  const [foods, setFoods] = useState<Meal[]>([]);
+  const loadFoods = async () => {
+    try {
+      const foodsResponse = await onGetFood();
+      setFoods(foodsResponse);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleModalClose = async (shouldUpdate?: boolean) => {
+    if (shouldUpdate) {
+      Alert.alert('The food was saved successfully.');
+      loadFoods();
+    }
+    setIsVisible(false);
   };
   return (
     <View style={styles.container}>
@@ -21,7 +37,7 @@ const AddFood = () => {
             icon={<Icon name="add-circle-outline" color="#FFFFFF" />}
             radius={'lg'}
             color={'#4ECB71'}
-            onPress={() => setIsVisble(true)}
+            onPress={() => setIsVisible(true)}
           />
         </View>
       </View>
