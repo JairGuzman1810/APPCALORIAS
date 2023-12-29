@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, Alert} from 'react-native';
 import Header from '../../components/Header';
@@ -83,8 +84,8 @@ const AddFood = () => {
         />
       </View>
       <ScrollView style={styles.content}>
-        {foods?.map(meal => (
-          <MealItem key={`my-meal-item-${meal.name}`} {...meal} />
+        {foods?.map((meal: Meal) => (
+          <MealItem key={`my-meal-item-${meal.name}`} {...meal} isAbleToAdd />
         ))}
       </ScrollView>
       <AddFoodModal visible={visible} onClose={handleModalClose} />

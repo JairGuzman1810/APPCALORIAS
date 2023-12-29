@@ -113,11 +113,30 @@ const useFoodStorage = () => {
     }
   };
 
+  const handleRomoveTodayFood = async (index: number) => {
+    try {
+      const todayFood = await handleGetTodayFood();
+
+      const filterFood = todayFood?.filter((item: Meal, itemIndex) => {
+        return itemIndex !== index;
+      });
+
+      console.log(filterFood);
+
+      await AsyncStorage.setItem(MY_TODAY_FOOD_KEY, JSON.stringify(filterFood));
+      return Promise.resolve();
+    } catch (error) {
+      console.log(error);
+      return Promise.reject(error);
+    }
+  };
+
   return {
     onSaveFood: handleSaveFood,
     onSaveTodayFood: handleSaveTodayFood,
     onGetFood: handleGetFood,
     onGetTodayFood: handleGetTodayFood,
+    onDeleteTodayFood: handleRomoveTodayFood,
   };
 };
 

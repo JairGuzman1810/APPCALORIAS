@@ -5,12 +5,31 @@ import {Button} from '@rneui/themed';
 import {Icon} from '@rneui/base';
 import useFoodStorage from '../../hooks/useFoodStorage';
 
-const MealItem: FC<Meal> = ({calories, name, portion}) => {
-  const {onSaveTodayFood} = useFoodStorage();
-  const handleAddItemPress = async () => {
+type MealItemProps = Meal & {
+  isAbleToAdd?: boolean;
+  onCompleteAddRemove?: () => void;
+  itemPosition?: number;
+};
+
+const MealItem: FC<MealItemProps> = ({
+  calories,
+  name,
+  portion,
+  isAbleToAdd,
+  itemPosition,
+  onCompleteAddRemove,
+}) => {
+  const {onSaveTodayFood, onDeleteTodayFood} = useFoodStorage();
+  const handleButtonItemPress = async () => {
     try {
-      await onSaveTodayFood({calories, name, portion});
-      Alert.alert('The food was added to the day.');
+      if (isAbleToAdd) {
+        await onSaveTodayFood({calories, name, portion});
+        Alert.alert('The food was added to the day.');
+      } else {
+        await onDeleteTodayFood(itemPosition ?? -1);
+        Alert.alert('The food was removed.');
+      }
+      onCompleteAddRemove?.();
     } catch (error) {
       Alert.alert('The food was not added due to an error.');
     }
@@ -24,9 +43,9 @@ const MealItem: FC<Meal> = ({calories, name, portion}) => {
       <View style={styles.rightcontainer}>
         <View style={styles.iconbutton}>
           <Button
-            icon={<Icon name="add-circle-outline" />}
+            icon={<Icon name={isAbleToAdd ? 'add-circle-outline' : 'close'} />}
             type="clear"
-            onPress={handleAddItemPress}
+            onPress={handleButtonItemPress}
           />
         </View>
         <Text style={styles.calories}>{calories} cal</Text>

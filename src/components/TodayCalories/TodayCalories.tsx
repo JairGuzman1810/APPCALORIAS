@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 import CircularProgress from 'react-native-circular-progress-indicator';
 
-type TodayCaloriesProps = {
+export type TodayCaloriesProps = {
   total: number | string;
   consumed: number | string;
   remaining: number | string;

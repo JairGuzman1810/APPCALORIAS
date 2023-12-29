@@ -8,13 +8,19 @@ import {Meal} from '../../types';
 import TodayCalories, {
   TodayCaloriesProps,
 } from '../../components/TodayCalories';
+import TodayMeals from '../../components/TodayMeals';
 
 const totalCaloriesPerDay = 2000;
 
 const Home = () => {
   const {onGetTodayFood} = useFoodStorage();
   const [todayFood, setTodayFood] = useState<Meal[]>([]);
-  const [todayStats, setTodayStats] = useState<TodayCaloriesProps>({});
+  const [todayStats, setTodayStats] = useState<TodayCaloriesProps>({
+    consumed: 0,
+    percentage: 0,
+    remaining: 0,
+    total: totalCaloriesPerDay,
+  });
 
   const caculateTodayStats = (meals: Meal[]) => {
     try {
@@ -31,6 +37,7 @@ const Home = () => {
         consumed: consumedCalories,
         percentage,
         remaining: remainingCalories,
+        total: totalCaloriesPerDay,
       });
     } catch (error) {
       console.log(error);
@@ -53,13 +60,12 @@ const Home = () => {
     }, [loadTodayFood]),
   );
 
-  console.log(todayFood);
-
   return (
     <View style={styles.container}>
       <Header />
       <Calorias />
       <TodayCalories {...todayStats} />
+      <TodayMeals foods={todayFood} onCompleteAddRemove={loadTodayFood} />
     </View>
   );
 };
